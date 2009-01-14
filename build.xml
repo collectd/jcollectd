@@ -1,0 +1,126 @@
+<project name="jcollectd" default="test" basedir=".">
+  <description>Java collectd</description>
+  <property name="src.main" location="src/main/java" />
+  <property name="src.test" location="src/test/java" />
+  <property name="target" location="target" />
+  <property name="version" value="0.1.0"/>
+  <property name="dist.name"  value="jcollectd-${version}"/>
+  <property name="dist"  value="${target}/${dist.name}"/>
+
+  <property name="debug" value="true" />
+  <available property="junit" classname="junit.framework.Test"/>
+
+  <path id="alljars">
+     <fileset dir="${target}" includes="lib/collectd.jar"/>
+  </path>
+
+  <target name="init">
+    <mkdir dir="${target}/classes"/>
+    <mkdir dir="${target}/lib"/>
+  </target>
+
+  <target name="compile-tests" depends="init,compile" if="junit">
+    <javac destdir="${target}/classes"
+           debug="${debug}"
+           source="1.5" target="1.5"
+           classpath="${target}/classes">
+      <src path="${src.test}"/>
+    </javac>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac destdir="${target}/classes"
+           debug="${debug}"
+           source="1.5" target="1.5">
+      <src path="${src.main}"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar jarfile="${target}/lib/collectd.jar">
+      <fileset dir="${target}/classes"
+              excludes="**/*Test.class" />
+      <fileset dir="src/main/resources"/>
+      <fileset dir="." includes="etc/*.xml"/>
+      <manifest>
+        <attribute name="Main-Class"
+                   value="org.collectd.mx.MBeanReceiver"/>
+        <attribute name="Premain-Class"
+                   value="org.collectd.mx.RemoteMBeanSender"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="test" depends="compile-tests,jar" if="junit">
+    <property name="testresults"
+              location="${target}/testresults"/>
+
+    <mkdir dir="${testresults}"/>
+
+    <junit printsummary="yes" fork="yes"
+           haltonfailure="yes" showoutput="true">
+
+      <classpath>
+        <path refid="alljars"/>
+        <path location="${target}/classes"/>
+      </classpath>
+
+      <formatter type="xml"/>
+
+      <batchtest fork="yes" todir="${testresults}">
+        <fileset dir="${src.test}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="clean">
+    <delete dir="${target}" />
+  </target>
+
+  <target name="javadoc">
+    <mkdir dir="${target}/javadoc"/>
+    <javadoc packagenames="org.collectd.*"
+             useexternalfile="yes"
+             sourcepath="src/main/java"
+             destdir="${target}/javadoc"
+             author="false"
+             version="false"
+             windowtitle="Java collectd API"
+             doctitle="Jcollectd">
+      <group title="Jcollectd" packages="org.collectd" />
+     <bottom>Copyright &#169; 2009 <![CDATA[<a target="_top" href="http://www.hyperic.com/">Hyperic, Inc.</a>]]>. All Rights Reserved.</bottom>
+    </javadoc>
+  </target>
+
+  <target name="dist" depends="jar,javadoc">
+    <mkdir dir="${dist}"/>
+
+    <copy toDir="${dist}" filtering="on">
+      <fileset dir=".">
+        <include name="build.xml"/>
+        <include name="LICENSE"/>
+        <include name="README*"/>
+        <include name="etc/*.xml"/>
+        <include name="src/**/*.*"/>
+      </fileset>
+      <fileset dir="${target}">
+        <include name="javadoc/**"/>
+        <include name="lib/**"/>
+      </fileset>
+    </copy>
+
+   <tar destfile="${target}/${dist.name}.tar.gz"
+        basedir="${target}"
+        includes="${dist.name}/**"
+        longfile="gnu"
+        compression="gzip"/>
+  </target>
+
+  <target name="markdown">
+    <exec executable="markdown" dir="." output="${target}/README.html">
+      <arg value="README.markdown"/>
+    </exec>
+  </target>
+</project>

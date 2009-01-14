@@ -1,0 +1,108 @@
+apache_bytes		count:COUNTER:0:134217728
+apache_connections	count:GAUGE:0:65535
+apache_requests		count:COUNTER:0:134217728
+apache_scoreboard	count:GAUGE:0:65535
+bitrate			value:GAUGE:0:4294967295
+bytes			value:GAUGE:0:U
+cache_result		value:COUNTER:0:4294967295
+cache_size		value:GAUGE:0:4294967295
+charge			value:GAUGE:0:U
+connections		value:COUNTER:0:U
+counter			value:COUNTER:U:U
+cpufreq			value:GAUGE:0:U
+cpu			value:COUNTER:0:4294967295
+current			value:GAUGE:U:U
+delay			seconds:GAUGE:-1000000:1000000
+df			used:GAUGE:0:1125899906842623, free:GAUGE:0:1125899906842623
+disk_merged		read:COUNTER:0:4294967295, write:COUNTER:0:4294967295
+disk_octets		read:COUNTER:0:17179869183, write:COUNTER:0:17179869183
+disk_ops		read:COUNTER:0:4294967295, write:COUNTER:0:4294967295
+disk_time		read:COUNTER:0:1000000, write:COUNTER:0:1000000
+dns_answer		value:COUNTER:0:65535
+dns_octets		queries:COUNTER:0:125000000, responses:COUNTER:0:125000000
+dns_opcode		value:COUNTER:0:65535
+dns_qtype		value:COUNTER:0:65535
+dns_question		value:COUNTER:0:65535
+dns_rcode		value:COUNTER:0:65535
+email_check		value:GAUGE:0:U
+email_count		value:GAUGE:0:U
+email_size		value:GAUGE:0:U
+entropy			entropy:GAUGE:0:4294967295
+fanspeed		value:GAUGE:0:U
+files			value:GAUGE:0:U
+frequency		frequency:GAUGE:0:U
+frequency_offset	ppm:GAUGE:-1000000:1000000
+gauge			value:GAUGE:U:U
+humidity		value:GAUGE:0:100
+if_collisions		value:COUNTER:0:4294967295
+if_dropped		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+if_errors		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+if_multicast		value:COUNTER:0:4294967295
+if_octets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+if_packets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+if_rx_errors		value:COUNTER:0:4294967295
+if_tx_errors		value:COUNTER:0:4294967295
+io_octets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+io_packets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+ipt_bytes		value:COUNTER:0:134217728
+ipt_packets		value:COUNTER:0:134217728
+irq			value:COUNTER:U:65535
+latency			value:GAUGE:0:65535
+load			shortterm:GAUGE:0:100, midterm:GAUGE:0:100, longterm:GAUGE:0:100
+memcached_command	value:COUNTER:0:U
+memcached_connections	value:GAUGE:0:U
+memcached_items		value:GAUGE:0:U
+memcached_octets	rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+memcached_ops		value:COUNTER:0:134217728
+memory			value:GAUGE:0:281474976710656
+multimeter		value:GAUGE:U:U
+mysql_commands		value:COUNTER:0:U
+mysql_handler		value:COUNTER:0:U
+mysql_octets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+mysql_qcache		hits:COUNTER:0:U, inserts:COUNTER:0:U, not_cached:COUNTER:0:U, lowmem_prunes:COUNTER:0:U, queries_in_cache:GAUGE:0:U
+mysql_threads		running:GAUGE:0:U, connected:GAUGE:0:U, cached:GAUGE:0:U, created:COUNTER:0:U
+nfs_procedure		value:COUNTER:0:4294967295
+nginx_connections	value:GAUGE:0:U
+nginx_requests		value:COUNTER:0:134217728
+operations		value:COUNTER:0:4294967295
+percent			percent:GAUGE:0:100.1
+pg_blks			value:COUNTER:0:U
+pg_db_size		value:GAUGE:0:U
+pg_n_tup_c		value:COUNTER:0:U
+pg_n_tup_g		value:GAUGE:0:U
+pg_numbackends		value:GAUGE:0:U
+pg_scan			value:COUNTER:0:U
+pg_xact			value:COUNTER:0:U
+ping			ping:GAUGE:0:65535
+players			value:GAUGE:0:1000000
+power			value:GAUGE:0:U
+ps_count		processes:GAUGE:0:1000000, threads:GAUGE:0:1000000
+ps_cputime		user:COUNTER:0:16000000, syst:COUNTER:0:16000000
+ps_pagefaults		minflt:COUNTER:0:9223372036854775807, majflt:COUNTER:0:9223372036854775807
+ps_rss			value:GAUGE:0:9223372036854775807
+ps_state		value:GAUGE:0:65535
+queue_length		value:GAUGE:0:U
+serial_octets		rx:COUNTER:0:4294967295, tx:COUNTER:0:4294967295
+signal_noise		value:GAUGE:U:0
+signal_power		value:GAUGE:U:0
+signal_quality		value:GAUGE:0:U
+spam_check		value:GAUGE:0:U
+spam_score		value:GAUGE:U:U
+swap			value:GAUGE:0:1099511627776
+tcp_connections		value:GAUGE:0:4294967295
+temperature		value:GAUGE:-273.15:U
+time_dispersion		seconds:GAUGE:-1000000:1000000
+timeleft		timeleft:GAUGE:0:3600
+time_offset		seconds:GAUGE:-1000000:1000000
+users			users:GAUGE:0:65535
+virt_cpu_total		ns:COUNTER:0:256000000000
+virt_vcpu		ns:COUNTER:0:1000000000
+vmpage_action		value:COUNTER:0:4294967295
+vmpage_faults		minflt:COUNTER:0:9223372036854775807, majflt:COUNTER:0:9223372036854775807
+vmpage_io		in:COUNTER:0:4294967295, out:COUNTER:0:4294967295
+vmpage_number		value:GAUGE:0:4294967295
+voltage_threshold	value:GAUGE:U:U, threshold:GAUGE:U:U
+voltage			value:GAUGE:U:U
+vs_memory		value:GAUGE:0:9223372036854775807
+vs_processes		value:GAUGE:0:65535
+vs_threads		value:GAUGE:0:65535

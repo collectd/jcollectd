@@ -1,0 +1,9 @@
+<jcollectd-config>
+  <mbeans name="tomcat">
+    <mbean name="Catalina:type=GlobalRequestProcessor,*" alias="GRP">
+      <attribute name="bytesReceived" alias="received" units="bytes" type="counter"/>
+      <attribute name="bytesSent" alias="sent" units="bytes" type="counter"/>
+      <attribute name="errorCount" alias="errors" type="counter"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>

@@ -1,0 +1,36 @@
+<jcollectd-config>
+  <mbeans name="java.lang">
+    <mbean name="java.lang:type=Memory" alias="Memory">
+      <attribute name="HeapMemoryUsage.init" alias="Heap_init" units="bytes"/>
+      <attribute name="HeapMemoryUsage.committed" alias="Heap_committed" units="bytes"/>
+      <attribute name="HeapMemoryUsage.used" alias="Heap_used" units="bytes"/>
+      <attribute name="HeapMemoryUsage.max" alias="Heap_max" units="bytes"/>
+      <attribute name="NonHeapMemoryUsage.init" alias="NonHeap_init"  units="bytes"/>
+      <attribute name="NonHeapMemoryUsage.committed" alias="NonHeap_committed" units="bytes"/>
+      <attribute name="NonHeapMemoryUsage.used" alias="NonHeap_used" units="bytes"/>
+      <attribute name="NonHeapMemoryUsage.max" alias="NonHeap_max" units="bytes"/>
+    </mbean>
+
+    <mbean name="java.lang:type=Threading" alias="Threading">
+      <attribute name="ThreadCount" alias="Threads"/>
+      <attribute name="DaemonThreadCount" alias="DaemonThreads"/>
+    </mbean>
+
+    <mbean name="java.lang:type=ClassLoading" alias="ClassLoading">
+      <attribute name="LoadedClassCount" alias="LoadedClasses"/>
+      <attribute name="TotalLoadedClassCount" alias="TotLoadedClasses"/>
+      <attribute name="UnloadedClassCount" alias="UnloadedClasses"/>
+    </mbean>
+
+    <!-- ms
+    <mbean name="java.lang:type=Compilation" alias="Compilation">
+      <attribute name="TotalCompilationTime" alias="TotalTime"/>
+    </mbean>
+    -->
+
+    <mbean name="java.lang:type=GarbageCollector,*" alias="GC">
+      <attribute name="CollectionCount" type="counter"/>
+      <attribute name="CollectionTime" type="counter"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>
