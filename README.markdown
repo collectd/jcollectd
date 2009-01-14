@@ -133,6 +133,12 @@ and what type the metric is.  See the etc/ directory for examples.
 The format is currently subject to change pending feedback and
 documentation will follow.
 
+### Download
+
+* [git repo](http://github.com/hyperic/jcollectd)
+
+* [tarball](http://support.hyperic.com/download/attachments/60621258/jcollectd-0.1.0.tar.gz)
+
 ### See Also
 
 * [collectd](http://collectd.org) - the system statistics collection daemon
