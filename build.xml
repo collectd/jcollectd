@@ -3,7 +3,7 @@
   <property name="src.main" location="src/main/java" />
   <property name="src.test" location="src/test/java" />
   <property name="target" location="target" />
-  <property name="version" value="0.1.0"/>
+  <property name="version" value="0.2.0-dev"/>
   <property name="dist.name"  value="jcollectd-${version}"/>
   <property name="dist"  value="${target}/${dist.name}"/>
 
