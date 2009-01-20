@@ -49,6 +49,7 @@ public class MBeanSender implements Dispatcher {
     private static final Logger _log =
         Logger.getLogger(MBeanSender.class.getName());
     private static final String UDP = "udp";
+    private static final String PSEP = "://";
     private static final String RUNTIME_NAME =
         "java.lang:type=Runtime";
 
@@ -112,13 +113,12 @@ public class MBeanSender implements Dispatcher {
     }
 
     public void addDestination(String url) {
-        final String psep = "://";
-        int ix = url.indexOf(psep);
+        int ix = url.indexOf(PSEP);
         if (ix == -1) {
             throw new IllegalArgumentException("Malformed url: " + url);
         }
         String protocol = url.substring(0, ix);
-        String server = url.substring(ix + psep.length());
+        String server = url.substring(ix + PSEP.length());
         Sender sender = _senders.get(protocol);
         if (sender == null) {
             if (protocol.equals(UDP)) {
@@ -229,7 +229,7 @@ public class MBeanSender implements Dispatcher {
         String[] argv = args.split("#");
         for (int i=0; i<argv.length; i++) {
             String arg = argv[i];
-            if (arg.indexOf("://") != -1) {
+            if (arg.indexOf(PSEP) != -1) {
                 //e.g. "udp://address:port"
                 addDestination(arg);
             }
@@ -242,7 +242,12 @@ public class MBeanSender implements Dispatcher {
     protected void premainConfigure(String args) {
         addShutdownHook();
         configure(System.getProperties());
-        init(args);        
+        init(args);
+        if (_senders.size() == 0) {
+            String dest = UDP + PSEP + Network.DEFAULT_V4_ADDR;
+            _log.fine("Adding default destination: " + dest);
+            addDestination(dest);
+        }
     }
 
     public static void premain(String args, Instrumentation instr) {
