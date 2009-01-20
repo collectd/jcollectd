@@ -43,7 +43,7 @@ The MBeanReceiver can be started using the following command:
 * Listen on the IPv4 unicast address **127.0.0.1:25827** and start
   jconsole attached locally to the collectd.jar process:
 
-        java -Djcd.laddr=udp://127.0.0.1:25827 -jar collectd.jar -jconsole
+        java -Djcd.laddr=127.0.0.1:25827 -jar collectd.jar -jconsole
 
 * Listen on the default IPv4 multicast group and allow remote JMX
   connections to RMI/TCP port *25826*:
@@ -59,7 +59,7 @@ The MBeanReceiver can be started using the following command:
 * jcd.laddr - UDP listen address, the default is **239.192.74.66:25826**.
   Example:
 
-        jcd.laddr=udp://localhost:25826
+        jcd.laddr=localhost:25826
 
 * jcd.ifaddr - The multicast network interface, default is any.
   Example:
