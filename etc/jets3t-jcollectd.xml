@@ -1,0 +1,19 @@
+<jcollectd-config>
+  <mbeans name="jets3t">
+
+    <mbean name="jets3t:Type=S3Service" alias="Requests">
+      <attribute name="TotalObjectListRequests" alias="List" type="counter"/>
+      <attribute name="TotalObjectCopyRequests" alias="Copy" type="counter"/>
+      <attribute name="TotalObjectDeleteRequests" alias="Delete" type="counter"/>
+      <attribute name="TotalObjectGetRequests" alias="Get" type="counter"/>
+      <attribute name="TotalObjectPutRequests" alias="Put" type="counter"/>
+    </mbean>
+
+    <mbean name="jets3t:Type=S3ServiceException" alias="Exceptions">
+      <attribute name="AccessDenied" type="counter"/>
+      <attribute name="InternalError" type="counter"/>
+      <attribute name="ServiceUnavailable" type="counter"/>
+      <attribute name="InvalidAccessKeyId" type="counter"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>
