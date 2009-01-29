@@ -66,6 +66,11 @@ The MBeanReceiver can be started using the following command:
 
         jcd.ifaddr=eth2
 
+* jcd.typesdb - collectd types database files, default is types.db from collectd.jar
+  Example:
+
+        jcd.typesdb=/opt/collectd/lib/types.db:./mytypes.db
+
 * jcd.mx.summary - Enable summary MBean aggregator, the default is true.
   Example:
 
