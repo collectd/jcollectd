@@ -18,13 +18,18 @@
 
 package org.collectd.mx;
 
+import java.util.List;
+
+import org.collectd.protocol.DataSource;
 import org.collectd.protocol.Network;
+import org.collectd.protocol.TypesDB;
 
 /**
  * MBean attribute to collectd metric metadata mapper.
  */
 public class MBeanAttribute {
 
+    private static final TypesDB _types = TypesDB.getInstance();
     private String _name;
     private String _attributeName;
     private String _compositeKey;
@@ -40,12 +45,12 @@ public class MBeanAttribute {
     }
 
     private static final int getDataType(String typeName) {
-        //XXX types.db mapping
-        if (typeName.equals("counter")) {
-            return Network.DS_TYPE_COUNTER;
+        List<DataSource> ds = _types.getType(typeName); 
+        if ((ds == null) || (ds.size() == 0)) {
+            return Network.DS_TYPE_GAUGE;
         }
         else {
-            return Network.DS_TYPE_GAUGE;
+            return ds.get(0).getType();
         }
     }
 
