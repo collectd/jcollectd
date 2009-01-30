@@ -25,10 +25,11 @@ public class DataSource {
     public static final int TYPE_COUNTER = 0;
     public static final int TYPE_GAUGE   = 1;
 
-    static final String GAUGE = "GAUGE";
     static final String COUNTER = "COUNTER";
+    static final String GAUGE = "GAUGE";
+
     static final String NAN = "U";
-    private static final String[] TYPES = { GAUGE, COUNTER };
+    private static final String[] TYPES = { COUNTER, GAUGE };
 
     String _name;
     int _type;
