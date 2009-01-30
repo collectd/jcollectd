@@ -32,6 +32,7 @@ public class PacketWriter {
 
     private ByteArrayOutputStream _bos;
     private DataOutputStream _os;
+    private final TypesDB _types = TypesDB.getInstance();
 
     public PacketWriter() {
         this(new ByteArrayOutputStream(Network.BUFFER_SIZE));
@@ -61,17 +62,29 @@ public class PacketWriter {
     public void write(PluginData data)
         throws IOException {
 
+        String type = data.getType();
+
         writeString(Network.TYPE_HOST, data.getHost());
         writeNumber(Network.TYPE_TIME, data.getTime()/1000);
         writeString(Network.TYPE_PLUGIN, data.getPlugin());
         writeString(Network.TYPE_PLUGIN_INSTANCE, data.getPluginInstance());
-        writeString(Network.TYPE_TYPE, data.getType());
+        writeString(Network.TYPE_TYPE, type);
         writeString(Network.TYPE_TYPE_INSTANCE, data.getTypeInstance());
         
         if (data instanceof ValueList) {
             ValueList vl = (ValueList)data;
+            List<DataSource> ds = _types.getType(type);
+            List<Number> values = vl.getValues();
+
+            if ((ds != null) && (ds.size() != values.size())) {
+                String msg =
+                    type + " datasource mismatch, expecting " +
+                    ds.size() + ", given " + values.size();
+                throw new IOException(msg);
+            }
+
             writeNumber(Network.TYPE_INTERVAL, vl.getInterval());
-            writeValues(vl.getValues());
+            writeValues(ds, values);
         }
         else {
             //XXX Notification
@@ -84,7 +97,7 @@ public class PacketWriter {
         _os.writeShort(len);
     }
 
-    private void writeValues(List<Number> values)
+    private void writeValues(List<DataSource> ds, List<Number> values)
         throws IOException {
 
         int num = values.size();
@@ -95,12 +108,25 @@ public class PacketWriter {
             (num * Network.UINT64_LEN);
 
         byte[] types = new byte[num];
+        int ds_len;
+        if (ds == null) {
+            ds_len = 0;
+        }
+        else {
+            ds_len = ds.size();
+        }
+
         for (int i=0; i<num; i++) {
-            if (values.get(i) instanceof Double) {
-                types[i] = Network.DS_TYPE_GAUGE;
+            if (ds_len == 0) {
+                if (values.get(i) instanceof Double) {
+                    types[i] = Network.DS_TYPE_GAUGE;
+                }
+                else {
+                    types[i] = Network.DS_TYPE_COUNTER;
+                }
             }
             else {
-                types[i] = Network.DS_TYPE_COUNTER;
+                types[i] = (byte)ds.get(i).getType();
             }
         }
 
