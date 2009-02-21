@@ -29,8 +29,8 @@ import javax.management.MBeanInfo;
 import javax.management.ObjectName;
 import javax.management.openmbean.CompositeData;
 
+import org.collectd.api.ValueList;
 import org.collectd.protocol.Network;
-import org.collectd.protocol.ValueList;
 
 /**
  * Query MBeans and dispatch results upstream.

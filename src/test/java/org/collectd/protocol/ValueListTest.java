@@ -21,6 +21,9 @@ package org.collectd.protocol;
 import java.io.IOException;
 import java.util.List;
 
+import org.collectd.api.Notification;
+import org.collectd.api.ValueList;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

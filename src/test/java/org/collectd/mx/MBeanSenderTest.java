@@ -27,17 +27,13 @@ import java.util.logging.Logger;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.collectd.mx.CollectdMBean;
-import org.collectd.mx.MBeanCollector;
-import org.collectd.mx.MBeanConfig;
-import org.collectd.mx.MBeanSender;
+import junit.framework.TestCase;
+
+import org.collectd.api.Notification;
+import org.collectd.api.ValueList;
 import org.collectd.protocol.Dispatcher;
-import org.collectd.protocol.Notification;
 import org.collectd.protocol.ReceiverTest;
 import org.collectd.protocol.UdpReceiver;
-import org.collectd.protocol.ValueList;
-
-import junit.framework.TestCase;
 
 public class MBeanSenderTest
     extends TestCase

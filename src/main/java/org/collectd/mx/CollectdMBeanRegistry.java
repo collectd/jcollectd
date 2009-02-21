@@ -34,12 +34,12 @@ import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
 
-import org.collectd.protocol.DataSource;
+import org.collectd.api.DataSource;
 import org.collectd.protocol.Network;
-import org.collectd.protocol.Notification;
+import org.collectd.api.Notification;
 import org.collectd.protocol.Dispatcher;
-import org.collectd.protocol.PluginData;
-import org.collectd.protocol.ValueList;
+import org.collectd.api.PluginData;
+import org.collectd.api.ValueList;
 
 /**
  * Convert collectd value_list_t structures to JMX MBeans.

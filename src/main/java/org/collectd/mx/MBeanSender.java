@@ -36,11 +36,11 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import org.collectd.protocol.Network;
-import org.collectd.protocol.Notification;
+import org.collectd.api.Notification;
 import org.collectd.protocol.Dispatcher;
 import org.collectd.protocol.Sender;
 import org.collectd.protocol.UdpSender;
-import org.collectd.protocol.ValueList;
+import org.collectd.api.ValueList;
 
 /**
  * Process -javaagent configuration and schedule MBeanCollector objects.

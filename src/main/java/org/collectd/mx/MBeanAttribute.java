@@ -20,7 +20,7 @@ package org.collectd.mx;
 
 import java.util.List;
 
-import org.collectd.protocol.DataSource;
+import org.collectd.api.DataSource;
 import org.collectd.protocol.Network;
 import org.collectd.protocol.TypesDB;
 
