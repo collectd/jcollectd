@@ -21,6 +21,10 @@ package org.collectd.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.collectd.api.DataSource;
+import org.collectd.api.ValueList;
+import org.collectd.api.Notification;
+
 /**
  * Dispatch collectd data to stdout.
  * java -classpath collectd.jar org.collectd.protocol.UdpReceiver 

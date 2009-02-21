@@ -16,7 +16,7 @@
  * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
  */
 
-package org.collectd.protocol;
+package org.collectd.api;
 
 /**
  * Java representation of collectd/src/plugin.h:data_source_t structure. 
@@ -35,6 +35,21 @@ public class DataSource {
     int _type;
     double _min;
     double _max;
+
+    public DataSource (String name, int type, double min, double max) {
+        this._name = name;
+        this._type = TYPE_GAUGE;
+        if (type == TYPE_COUNTER)
+            this._type = TYPE_COUNTER;
+        this._min = min;
+        this._max = max;
+    }
+
+    /* Needed in parseDataSource below. Other code should use the above
+     * constructor or `parseDataSource'. */
+    private DataSource () {
+        this._type = TYPE_GAUGE;
+    }
 
     public String getName() {
         return _name;
@@ -95,4 +110,36 @@ public class DataSource {
         sb.append(asString(_max));
         return sb.toString();
     }
+
+    static public DataSource parseDataSource (String str)
+    {
+        String[] fields;
+        int str_len = str.length ();
+        DataSource dsrc = new DataSource ();
+
+        /* Ignore trailing commas. This makes it easier for parsing code. */
+        if (str.charAt (str_len - 1) == ',') {
+            str = str.substring (0, str_len - 1);
+        }
+
+        fields = str.split(":");
+        if (fields.length != 4)
+            return (null);
+
+        dsrc._name = fields[0];
+
+        if (fields[1].equals (DataSource.GAUGE)) {
+            dsrc._type  = TYPE_GAUGE;
+        }
+        else {
+            dsrc._type  = TYPE_COUNTER;
+        }
+
+        dsrc._min =  toDouble (fields[2]);
+        dsrc._max =  toDouble (fields[3]);
+
+        return (dsrc);
+    } /* DataSource parseDataSource */
 }
+
+/* vim: set sw=4 sts=4 et : */

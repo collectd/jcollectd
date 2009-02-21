@@ -24,11 +24,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import org.collectd.api.DataSource;
+import org.collectd.api.DataSet;
 
 /**
  * Parser for collectd/src/types.db format.
@@ -101,47 +103,18 @@ public class TypesDB {
         String line;
 
         while ((line = reader.readLine()) != null) {
-            line = line.trim();
-            if (line.length() == 0) {
-                continue;
-            }
-            if (line.charAt(0) == '#') {
-                continue;
-            }
-            String[] fields = line.split("\\s+");
-            String type = fields[0];
+            DataSet ds;
 
-            for (int i=1; i<fields.length; i++) {
-                String entry = fields[i];
-                int len = entry.length();
-                if (entry.charAt(len-1) == ',') {
-                    entry = entry.substring(0, len-1);
-                }
+            ds = DataSet.parseDataSet (line);
+            if (ds != null)
+            {
+                String type = ds.getType ();
+                List<DataSource> dsrc = ds.getDataSources ();
 
-                String[] dsfields = entry.split(":");
-                DataSource ds = new DataSource();
-                ds._name = dsfields[0];
-
-                String dstype = dsfields[1];
-                if (dstype.equals(DataSource.GAUGE)) {
-                    ds._type = DataSource.TYPE_GAUGE;
-                }
-                else {
-                    ds._type = DataSource.TYPE_COUNTER;
-                }
-
-                ds._min = DataSource.toDouble(dsfields[2]);
-                ds._max = DataSource.toDouble(dsfields[3]);
-
-                List<DataSource> tds = _types.get(type);
-                if (tds == null) {
-                    tds = new ArrayList<DataSource>();
-                    _types.put(type, tds);
-                }
-                tds.add(ds);
+                this._types.put (type, dsrc);
             }
         }
-    }
+    } /* void load */
 
     public static void main(String[] args) throws Exception {
         TypesDB tl = new TypesDB();

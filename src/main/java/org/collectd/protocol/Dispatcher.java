@@ -18,6 +18,9 @@
 
 package org.collectd.protocol;
 
+import org.collectd.api.ValueList;
+import org.collectd.api.Notification;
+
 /**
  * Java interface equivalent of:
  * collectd/src/plugin.h:plugin_dispatch_values,plugin_dispatch_notification 

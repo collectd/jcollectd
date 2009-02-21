@@ -16,7 +16,7 @@
  * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
  */
 
-package org.collectd.protocol;
+package org.collectd.api;
 
 /**
  * Java representation of collectd/src/plugin.h:notfication_t structure.
@@ -33,11 +33,18 @@ public class Notification extends PluginData {
         "UNKNOWN"
     };
 
-    int _severity;
-    String _message;
+    private int _severity;
+    private String _message;
 
-    Notification(PluginData pd) {
-        super(pd);
+    public Notification (PluginData pd) {
+        super (pd);
+    }
+
+    public void setSeverity (int severity) {
+        if ((severity == FAILURE)
+                || (severity == WARNING)
+                || (severity == OKAY))
+            this._severity = severity;
     }
 
     public int getSeverity() {
@@ -55,6 +62,10 @@ public class Notification extends PluginData {
             default:
                 return SEVERITY[3];
         }
+    }
+
+    public void setMessage (String message) {
+        this._message = message;
     }
 
     public String getMessage() {

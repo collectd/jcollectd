@@ -21,6 +21,10 @@ package org.collectd.protocol;
 import java.io.IOException;
 import java.net.InetAddress;
 
+import org.collectd.api.PluginData;
+import org.collectd.api.ValueList;
+import org.collectd.api.Notification;
+
 /**
  * Protocol independent Sender interface. 
  */

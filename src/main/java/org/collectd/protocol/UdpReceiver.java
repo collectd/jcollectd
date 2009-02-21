@@ -31,6 +31,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.logging.Logger;
 
+import org.collectd.api.PluginData;
+import org.collectd.api.ValueList;
+import org.collectd.api.Notification;
+
 /**
  * collectd UDP protocol receiver.
  * See collectd/src/network.c:parse_packet
@@ -160,12 +164,12 @@ public class UdpReceiver {
                 bb.order(ByteOrder.LITTLE_ENDIAN);
                 val = new Double(bb.getDouble());
             }
-            vl._values.add(val);
+            vl.addValue (val);
         }
         if (_dispatcher != null) {
             _dispatcher.dispatch(vl);
         }
-        vl._values.clear();        
+        vl.clearValues ();
     }
 
     //a union of sorts
@@ -214,35 +218,35 @@ public class UdpReceiver {
                 readValues(is, obj.getValueList());
             }
             else if (type == Network.TYPE_TIME) {
-                obj.pd._time = is.readLong() * 1000;
+                obj.pd.setTime (is.readLong() * 1000);
             }
             else if (type == Network.TYPE_INTERVAL) {
-                obj.getValueList()._interval = is.readLong();
+                obj.getValueList ().setInterval (is.readLong ());
             }
             else if (type == Network.TYPE_HOST) {
-                obj.pd._host = readString(is, len);
+                obj.pd.setHost (readString (is, len));
             }
             else if (type == Network.TYPE_PLUGIN) {
-                obj.pd._plugin = readString(is, len);
+                obj.pd.setPlugin (readString (is, len));
             }
             else if (type == Network.TYPE_PLUGIN_INSTANCE) {
-                obj.pd._pluginInstance = readString(is, len);
+                obj.pd.setPluginInstance (readString (is, len));
             }
             else if (type == Network.TYPE_TYPE) {
-                obj.pd._type = readString(is, len);
+                obj.pd.setType (readString (is, len));
             }
             else if (type == Network.TYPE_TYPE_INSTANCE) {
-                obj.pd._typeInstance = readString(is, len);
+                obj.pd.setTypeInstance (readString (is, len));
             }
             else if (type == Network.TYPE_MESSAGE) {
                 Notification notif = obj.getNotification();
-                notif._message = readString(is, len);
+                notif.setMessage (readString(is, len));
                 if (_dispatcher != null) {
                     _dispatcher.dispatch(notif);
                 }
             }
             else if (type == Network.TYPE_SEVERITY) {
-                obj.getNotification()._severity = (int)is.readLong();
+                obj.getNotification ().setSeverity ((int) is.readLong ());
             }
             else {
                 break;

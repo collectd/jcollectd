@@ -25,6 +25,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
+import org.collectd.api.DataSource;
+import org.collectd.api.PluginData;
+import org.collectd.api.ValueList;
+
 /**
  * collectd/src/network.c:network_write 
  */

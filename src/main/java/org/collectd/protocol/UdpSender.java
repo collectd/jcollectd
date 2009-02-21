@@ -27,6 +27,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.collectd.api.PluginData;
+
 /**
  * collectd UDP protocol sender.
  * See collectd/src/network.c:network_write
