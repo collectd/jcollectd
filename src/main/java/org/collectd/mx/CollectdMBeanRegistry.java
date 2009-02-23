@@ -36,6 +36,7 @@ import javax.management.ObjectName;
 
 import org.collectd.api.DataSource;
 import org.collectd.protocol.Network;
+import org.collectd.protocol.TypesDB;
 import org.collectd.api.Notification;
 import org.collectd.protocol.Dispatcher;
 import org.collectd.api.PluginData;
@@ -194,6 +195,9 @@ public class CollectdMBeanRegistry
         }
         else {
             List<DataSource> ds = vl.getDataSource();
+            if (ds == null) {
+                ds = TypesDB.getInstance().getType(vl.getType());
+            }
             for (int i=0; i<size; i++) {
                 if (ds != null) {
                     key = type + "." + ds.get(i).getName();
