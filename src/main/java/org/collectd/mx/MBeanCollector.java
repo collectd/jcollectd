@@ -24,13 +24,16 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.management.Descriptor;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
+import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.openmbean.CompositeData;
 
 import org.collectd.api.ValueList;
 import org.collectd.protocol.Network;
+import org.collectd.protocol.TypesDB;
 
 /**
  * Query MBeans and dispatch results upstream.
@@ -39,6 +42,10 @@ public class MBeanCollector implements Runnable {
 
     private static final Logger _log =
         Logger.getLogger(MBeanCollector.class.getName());
+    private static final boolean _useDescriptors =
+        "true".equals(Network.getProperty("mx.descriptors", "true"));
+    private static final String _metricTypeField =
+        Network.getProperty("mx.metricTypeField", "metricType");
     private MBeanSender _sender;
     private long _interval = 60;
     private Map<String,MBeanQuery> _queries =
@@ -154,20 +161,47 @@ public class MBeanCollector implements Runnable {
     }
 
     public void collect(MBeanQuery query, ObjectName name) throws Exception {
+        MBeanServerConnection conn = _sender.getMBeanServerConnection();
         String plugin = query.getPlugin();
         if (plugin == null) {
             plugin = name.getDomain();
         }
 
+        Map<String,MBeanAttributeInfo> attrInfo = null;
+        if (_useDescriptors) {
+            MBeanInfo info = conn.getMBeanInfo(name);
+            attrInfo = new HashMap<String,MBeanAttributeInfo>();
+            for (MBeanAttributeInfo ainfo : info.getAttributes()) {
+                attrInfo.put(ainfo.getName(), ainfo);
+            }
+        }
+
         for (MBeanAttribute attr : query.getAttributes()) {
             String attrName = attr.getAttributeName();
             Object obj;
+
             try {
-                obj = _sender.getMBeanServerConnection().getAttribute(name, attrName);
+                obj = conn.getAttribute(name, attrName);
             } catch (Exception e) {
                 //XXX remove attr for future collection e.g. UnsupportedOperation
                 continue;
             }
+
+            if (_useDescriptors) {
+                //e.g. spring @ManagedMetric(metricType = MetricType.COUNTER)
+                try {
+                    Descriptor descriptor = attrInfo.get(attrName).getDescriptor();
+                    Object type = descriptor.getFieldValue(_metricTypeField);
+                    if (TypesDB.NAME_COUNTER.equals(type)) {
+                        if (attr.getTypeName().equals(TypesDB.NAME_GAUGE)) {
+                            attr.setTypeName(TypesDB.NAME_COUNTER);
+                        }
+                        attr.setDataType(Network.DS_TYPE_COUNTER);
+                    }
+                } catch (Exception e) {
+                }
+            }
+
             if (obj instanceof CompositeData) {
                 CompositeData data = (CompositeData)obj;
                 String key = attr.getCompositeKey();
