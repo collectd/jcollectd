@@ -26,6 +26,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.collectd.protocol.TypesDB;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -120,7 +121,7 @@ public class MBeanConfig {
                     String units = getAttribute(attr, "units");
                     String alias = getAttribute(attr, "alias");
                     if (type == null) {
-                        type = "gauge";
+                        type = TypesDB.NAME_GAUGE;
                     }
                     MBeanAttribute mattr = new MBeanAttribute(attrName, type);
                     if (alias != null) {

@@ -64,10 +64,10 @@ public class MBeanAttribute {
         _typeName = typeName;
         if (_typeName == null) {
             if (dataType == Network.DS_TYPE_COUNTER) {
-                _typeName = "counter";
+                _typeName = TypesDB.NAME_COUNTER;
             }
             else {
-                _typeName = "gauge";
+                _typeName = TypesDB.NAME_GAUGE;
             }
         }
         int ix = attributeName.indexOf('.');
