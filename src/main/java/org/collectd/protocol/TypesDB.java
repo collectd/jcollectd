@@ -36,6 +36,11 @@ import org.collectd.api.DataSet;
  * Parser for collectd/src/types.db format.
  */
 public class TypesDB {
+
+    //constants for generic type names
+    public static final String NAME_COUNTER = "counter";
+    public static final String NAME_GAUGE   = "gauge";
+
     //List<DataSource> == plugin.h:data_set_t
     private Map<String,List<DataSource>> _types =
         new HashMap<String,List<DataSource>>();
