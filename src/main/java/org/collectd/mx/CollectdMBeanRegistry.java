@@ -128,6 +128,9 @@ public class CollectdMBeanRegistry
         bname.append(getRootName(vl.getHost(), vl));
         if (!vl.defined(instance)) {
             List<DataSource> ds = vl.getDataSource();
+            if (ds == null) {
+                ds = TypesDB.getInstance().getType(vl.getType());
+            }
             if ((ds != null) && (ds.size() > 1)) {
                 //e.g. ds = {rx,tx} -> type=if_octets,typeInstance=en1 
                 instance = vl.getTypeInstance();

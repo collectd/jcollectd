@@ -41,6 +41,9 @@ public class StdoutDispatcher implements Dispatcher {
             System.out.print(",type=" + vl.getType());
             System.out.print(",typeInstance=" + vl.getTypeInstance());
             List<DataSource> ds = vl.getDataSource();
+            if (ds == null) {
+                ds = TypesDB.getInstance().getType(vl.getType());
+            }
             if (ds != null) {
                 List<String> names = new ArrayList<String>();
                 for (int i=0; i<ds.size(); i++) {
