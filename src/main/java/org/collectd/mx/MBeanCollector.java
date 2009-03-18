@@ -18,6 +18,7 @@
 
 package org.collectd.mx;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,8 +43,9 @@ public class MBeanCollector implements Runnable {
 
     private static final Logger _log =
         Logger.getLogger(MBeanCollector.class.getName());
-    private static final boolean _useDescriptors =
+    private static boolean _useDescriptors =
         "true".equals(Network.getProperty("mx.descriptors", "true"));
+    private static Method _getDescriptor;
     private static final String _metricTypeField =
         Network.getProperty("mx.metricTypeField", "metricType");
     private MBeanSender _sender;
@@ -51,6 +53,17 @@ public class MBeanCollector implements Runnable {
     private Map<String,MBeanQuery> _queries =
         new HashMap<String,MBeanQuery>();
 
+    static {
+        if (_useDescriptors) {
+            try {
+                _getDescriptor = //1.6+
+                    MBeanAttributeInfo.class.getMethod("getDescriptor",
+                                                       (Class[])null);
+            } catch (Exception e) {
+                _useDescriptors = false;
+            }
+        }
+    }
     public MBeanSender getSender() {
         return _sender;
     }
@@ -190,7 +203,9 @@ public class MBeanCollector implements Runnable {
             if (_useDescriptors) {
                 //e.g. spring @ManagedMetric(metricType = MetricType.COUNTER)
                 try {
-                    Descriptor descriptor = attrInfo.get(attrName).getDescriptor();
+                    Descriptor descriptor =
+                        (Descriptor)_getDescriptor.invoke(attrInfo.get(attrName),
+                                                          (Object[])null);
                     Object type = descriptor.getFieldValue(_metricTypeField);
                     if (TypesDB.NAME_COUNTER.equals(type)) {
                         if (attr.getTypeName().equals(TypesDB.NAME_GAUGE)) {
