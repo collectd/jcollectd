@@ -20,12 +20,13 @@ package org.collectd.mx;
 
 import java.io.IOException;
 import java.lang.instrument.Instrumentation;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+
+import org.collectd.protocol.Network;
 
 /**
  * Out-of-process MBeanSender, polling a remote JMX MBeanServer. 
@@ -56,8 +57,8 @@ public class RemoteMBeanSender extends MBeanSender {
         setMBeanServerConnection(new JMXServiceURL(url));
     }
 
-    public void configure(Properties props) {
-        String url = props.getProperty("jcd.mx.url");
+    public void configure() {
+        String url = Network.getProperty("jcd.mx.url");
         if (url != null) {
             try {
                 setMBeanServerConnection(url);
@@ -65,7 +66,7 @@ public class RemoteMBeanSender extends MBeanSender {
                 _log.warning(url + ": " + e);
             }
         }
-        super.configure(props);
+        super.configure();
     }
 
     public static void premain(String args, Instrumentation instr) {
