@@ -125,6 +125,10 @@ jcd.properties file:
   
         jcd.beans=mydomain:*#foo:type=Stats#bar:type=App,*
 
+* jcd.sendinterval - Interval in seconds between each send, default of 60 seconds.  Example:
+	
+        jcd.properties=60
+
 * jcd.properties - Path to the jcd.properties file which can be used
   to define all of the above properties.  Example:
 
