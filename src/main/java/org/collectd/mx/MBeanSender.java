@@ -112,7 +112,7 @@ public class MBeanSender implements Dispatcher {
         _senders.put(protocol, sender);
     }
 
-    public void addDestination(String url) {
+    public void addDestination(String url,String hostPrefix) {
         int ix = url.indexOf(PSEP);
         if (ix == -1) {
             throw new IllegalArgumentException("Malformed url: " + url);
@@ -122,7 +122,7 @@ public class MBeanSender implements Dispatcher {
         Sender sender = _senders.get(protocol);
         if (sender == null) {
             if (protocol.equals(UDP)) {
-                sender = new UdpSender();
+                sender = new UdpSender(hostPrefix);
                 addSender(UDP, sender);
             }
             else {
@@ -208,10 +208,11 @@ public class MBeanSender implements Dispatcher {
     }
 
     public void configure(Properties props) {
-        //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60
+        //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60 -Djcd.hostPostfix=Search.Production
         String dest = props.getProperty("jcd.dest");
+        String hostPrefix = props.getProperty("jcd.hostPrefix");
         if (dest != null) {
-            addDestination(dest);
+            addDestination(dest,hostPrefix);
         }
         Long sendInterval = Long.getLong("jcd.sendinterval");         
         String tmpl = props.getProperty("jcd.tmpl");
@@ -239,7 +240,7 @@ public class MBeanSender implements Dispatcher {
             String arg = argv[i];
             if (arg.indexOf(PSEP) != -1) {
                 //e.g. "udp://address:port"
-                addDestination(arg);
+                addDestination(arg,null);
             }
             else {
                 schedule(arg);
@@ -254,7 +255,7 @@ public class MBeanSender implements Dispatcher {
         if (_senders.size() == 0) {
             String dest = UDP + PSEP + Network.DEFAULT_V4_ADDR;
             _log.fine("Adding default destination: " + dest);
-            addDestination(dest);
+            addDestination(dest,null);
         }
     }
 

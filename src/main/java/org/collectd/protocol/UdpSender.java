@@ -39,9 +39,9 @@ public class UdpSender extends Sender {
     private MulticastSocket _mcast;
     private PacketWriter _writer;
     
-    public UdpSender() {
+    public UdpSender(String hostPrefix) {
         _servers = new ArrayList<InetSocketAddress>();
-        _writer = new PacketWriter();        
+        _writer = new PacketWriter(hostPrefix);
     }
 
     public void addServer(String server) {
