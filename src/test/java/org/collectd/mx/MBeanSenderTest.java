@@ -101,7 +101,7 @@ public class MBeanSenderTest
         CollectdMBean mbean = new CollectdMBean(attrs);
         ObjectName name = new ObjectName(PLUGIN + ":type=dynamic");
         ManagementFactory.getPlatformMBeanServer().registerMBean(mbean, name);
-        _sender.scheduleMBean(name.getCanonicalName());
+        _sender.scheduleMBean(name.getCanonicalName(),null);
         _sender.flush();
         pause();
         _log.info(name + " was=" + n + ", now=" + _numMyValues);

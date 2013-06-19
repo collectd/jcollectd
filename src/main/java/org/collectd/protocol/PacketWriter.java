@@ -37,12 +37,14 @@ public class PacketWriter {
     private ByteArrayOutputStream _bos;
     private DataOutputStream _os;
     private final TypesDB _types = TypesDB.getInstance();
+    private String _hostPrefix;
 
-    public PacketWriter() {
-        this(new ByteArrayOutputStream(Network.BUFFER_SIZE));
+    public PacketWriter(String hostPrefix) {
+        this(new ByteArrayOutputStream(Network.BUFFER_SIZE),hostPrefix);
     }
 
-    public PacketWriter(ByteArrayOutputStream bos) {
+    public PacketWriter(ByteArrayOutputStream bos, String hostPrefix) {
+      _hostPrefix = hostPrefix;
         _bos = bos;
         _os = new DataOutputStream(_bos);
     }
@@ -67,8 +69,12 @@ public class PacketWriter {
         throws IOException {
 
         String type = data.getType();
+        String host = data.getHost();
 
-        writeString(Network.TYPE_HOST, data.getHost());
+        if(_hostPrefix!=null)
+          host = _hostPrefix + "." + host;
+
+        writeString(Network.TYPE_HOST, host);
         writeNumber(Network.TYPE_TIME, data.getTime()/1000);
         writeString(Network.TYPE_PLUGIN, data.getPlugin());
         writeString(Network.TYPE_PLUGIN_INSTANCE, data.getPluginInstance());
