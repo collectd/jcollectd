@@ -36,6 +36,13 @@ public class MBeanQuery {
     private Set<MBeanAttribute> _attributes =
         new HashSet<MBeanAttribute>();
 
+    public String toString(){
+      return "name:" + _name 
+              + "\nplugin:" + _plugin
+              + "\npluginInstance:" + _pluginInstance
+              + "\nalias:" + _alias;
+    }
+
     public MBeanQuery(ObjectName name) {
         _name = name;
     }

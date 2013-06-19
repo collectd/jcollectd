@@ -157,15 +157,17 @@ public class MBeanCollector implements Runnable {
         ValueList vl = new ValueList();
         vl.setInterval(getInterval());
         vl.setPlugin(plugin);
-        if (beanName == null){
+        if(beanName == null){
+          if (query.getName().isPattern()) {
+              String instName = getBeanName(query.getName(), name);
+              if (instName != null) {
+                  beanName += " " + instName;
+              }
+          }else{
             beanName = getBeanName(null, name);
-        }
-        else if (query.getName().isPattern()) {
-            String instName = getBeanName(query.getName(), name);
-            if (instName != null) {
-                beanName += " " + instName;
-            }
-        }
+          }
+        }else{_log.info(beanName + " is bean name");} 
+
         vl.setPluginInstance(pluginInstance + "-" + beanName);
         vl.setType(attr.getTypeName());
         vl.setTypeInstance(typeInstance);
@@ -251,7 +253,7 @@ public class MBeanCollector implements Runnable {
     private void run(MBeanQuery query, ObjectName name) {
         try {
             if (query.getAttributes().size() == 0) {
-                query = queryAll(name);
+                query = queryAll(name, query);
             }
             collect(query, name);
         } catch (Exception e) {
@@ -260,11 +262,12 @@ public class MBeanCollector implements Runnable {
         }
     }
 
-    private MBeanQuery queryAll(ObjectName name)
+    private MBeanQuery queryAll(ObjectName name, MBeanQuery query2)
         throws Exception {
         MBeanQuery query = new MBeanQuery(name);
         MBeanInfo info = _sender.getMBeanServerConnection().getMBeanInfo(name);
         MBeanAttributeInfo[] attrs = info.getAttributes();
+        query.setAlias(query2.getAlias());
         for (int i=0; i<attrs.length; i++) {
             query.addAttribute(new MBeanAttribute(attrs[i].getName()));
         }
