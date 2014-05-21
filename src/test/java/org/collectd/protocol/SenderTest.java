@@ -1,16 +1,16 @@
 /*
  * jcollectd
  * Copyright (C) 2009 Hyperic, Inc.
- * 
+ *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; only version 2 of the License is applicable.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
@@ -70,6 +70,7 @@ public class SenderTest
         String dest = receiver.getListenAddress() + ":" + port;
         getLog().info("Add destination: " + dest);
         _sender.addServer(dest);
+        _values.clear();
     }
 
     @Override
@@ -91,12 +92,12 @@ public class SenderTest
                                  String host, long time)
         throws Exception {
 
-        assertTrue(vl.getHost().equals(host));
-        assertTrue(vl.getTime()/1000 == time);
-        assertTrue(vl.getInterval() == INTERVAL);
-        assertTrue(vl.getPlugin().equals(PLUGIN));
-        assertTrue(vl.getPluginInstance().equals(PLUGIN_INSTANCE));
-        assertTrue(vl.getType().equals(TYPE));
+        assertEquals(host, vl.getHost());
+        assertEquals(time, vl.getTime()/1000);
+        assertEquals(INTERVAL, vl.getInterval());
+        assertEquals(PLUGIN, vl.getPlugin());
+        assertEquals(PLUGIN_INSTANCE, vl.getPluginInstance());
+        assertEquals(TYPE, vl.getType());
     }
 
     private void flush() throws Exception {
@@ -113,16 +114,15 @@ public class SenderTest
         String host = vl.getHost();
         long time = vl.getTime() / 1000;
         flush();
-        assertTrue(_values.size() == 1);
+        assertEquals(1, _values.size());
         vl = _values.get(0);
         assertValueList(vl, host, time);
-        assertTrue(vl.getValues().size() == dvals.length);
-        int i=0;
+        assertEquals(dvals.length, vl.getValues().size());
+		int i = 0;
         for (Number num : vl.getValues()) {
-            assertTrue(num.getClass() == Double.class);
-            assertTrue(num.doubleValue() == dvals[i++]);
+        	assertEquals(Double.class, num.getClass());
+        	assertEquals(dvals[i++], num.doubleValue());
         }
-        _values.clear();
     }
 
     public void testCounter() throws Exception {
@@ -134,20 +134,19 @@ public class SenderTest
         String host = vl.getHost();
         long time = vl.getTime() / 1000;
         flush();
-        assertTrue(_values.size() == 1);
+        assertEquals(1, _values.size());
         vl = _values.get(0);
         assertValueList(vl, host, time);
-        assertTrue(vl.getValues().size() == lvals.length);
-        int i=0;
+        assertEquals(lvals.length, vl.getValues().size());
+		int i = 0;
         for (Number num : vl.getValues()) {
-            assertTrue(num.getClass() == Long.class);
-            assertTrue(num.longValue() == lvals[i++]);
+        	assertEquals(Long.class, num.getClass());
+        	assertEquals(lvals[i++], num.longValue());
         }
-        _values.clear();
     }
-    
+
     public void dispatch(Notification notification) {
-        
+
     }
 
     public void dispatch(ValueList vl) {

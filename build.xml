@@ -41,7 +41,6 @@
       <fileset dir="${target}/classes"
               excludes="**/*Test.class" />
       <fileset dir="src/main/resources"/>
-      <fileset dir="." includes="etc/*.xml"/>
       <manifest>
         <attribute name="Main-Class"
                    value="org.collectd.mx.MBeanReceiver"/>
@@ -102,7 +101,6 @@
         <include name="build.xml"/>
         <include name="LICENSE"/>
         <include name="README*"/>
-        <include name="etc/*.xml"/>
         <include name="src/**/*.*"/>
       </fileset>
       <fileset dir="${target}">
