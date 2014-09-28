@@ -19,6 +19,8 @@
 package org.collectd.mx;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
@@ -30,11 +32,15 @@ import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.ReflectionException;
 
+import org.collectd.protocol.Sender;
+
 /**
  * Wrap a Map&lt;String,Number&gt; as a DynamicMBean.
  */
 public class CollectdMBean implements DynamicMBean {
 
+	private final static Logger _log = Logger.getLogger(Sender.class.getName());
+	
     private Map<String,Number> _metrics;
 
     public CollectdMBean(Map<String,Number> metrics) {
@@ -58,9 +64,8 @@ public class CollectdMBean implements DynamicMBean {
             try {
                 result.add(new Attribute(attrs[i],
                                          getAttribute(attrs[i])));
-            } catch (AttributeNotFoundException e) {
-            } catch (MBeanException e) {
-            } catch (ReflectionException e) {
+            } catch (Exception e) {
+            	_log.log(Level.SEVERE, "unable to get attrivutes", e);
             }
         }
         return result;

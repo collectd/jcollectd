@@ -214,6 +214,7 @@ public class MBeanCollector implements Runnable {
                         attr.setDataType(Network.DS_TYPE_COUNTER);
                     }
                 } catch (Exception e) {
+                	_log.log(Level.SEVERE, "unable to get descriptor", e);
                 }
             }
 
