@@ -20,16 +20,20 @@ package org.collectd.protocol;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import org.collectd.api.Notification;
 import org.collectd.api.PluginData;
 import org.collectd.api.ValueList;
-import org.collectd.api.Notification;
 
 /**
  * Protocol independent Sender interface. 
  */
 public abstract class Sender implements Dispatcher {
 
+	private final static Logger _log = Logger.getLogger(Sender.class.getName());
+	
     private String _host =
         Network.getProperty("host", Network.getProperty("hostname"));
 
@@ -72,8 +76,7 @@ public abstract class Sender implements Dispatcher {
             setDefaults(values);
             write(values);
         } catch (IOException e) {
-            //XXX
-            e.printStackTrace();
+            _log.log(Level.SEVERE, "unable to dispatch values", e);
         }
     }
 
@@ -82,8 +85,7 @@ public abstract class Sender implements Dispatcher {
             setDefaults(notification);
             write(notification);
         } catch (IOException e) {
-            //XXX
-            e.printStackTrace();
+            _log.log(Level.SEVERE, "unable to dispatch values", e);
         }
     }
 }
